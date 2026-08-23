@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bacteriodex Completa</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gramPos: '#8b5cf6',
+            gramNeg: '#ef4444',
+            darkBg: '#0f172a',
+            cardBg: '#1e293b'
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-darkBg text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- ========================================================= -->
+  <!-- HEADER -->
+  <!-- ========================================================= -->
+
+  <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+
+      <a href="#" class="text-2xl font-black tracking-wider text-purple-400 flex items-center gap-2">
+        <span>🦠</span> BACTERIODEX
+      </a>
+
+      <nav class="hidden md:flex gap-8 font-medium">
+        <a href="#galeria" class="hover:text-purple-400 transition-colors">
+          Especímenes (20)
+        </a>
+
+        <a href="#contacto" class="hover:text-purple-400 transition-colors">
+          Reporte
+        </a>
+      </nav>
+
+      <button
+        id="btn-menu"
+        class="md:hidden text-2xl focus:outline-none"
+        aria-label="Abrir menú"
+      >
+        ☰
+      </button>
+    </div>
+
+    <div
+      id="mobile-menu"
+      class="hidden md:hidden bg-slate-900 border-b border-slate-800 px-4 py-3 flex flex-col gap-3"
+    >
+      <a href="#galeria" class="mobile-link hover:text-purple-400">
+        Especímenes (20)
+      </a>
+
+      <a href="#contacto" class="mobile-link hover:text-purple-400">
+        Reporte
+      </a>
+    </div>
+  </header>
+
+  <!-- ========================================================= -->
+  <!-- MAIN -->
+  <!-- ========================================================= -->
+
+  <main class="max-w-7xl mx-auto px-4 py-8 flex-grow w-full">
+
+    <!-- HERO -->
+
+    <section class="text-center py-8">
+
+      <h1 class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-red-400 mb-3">
+        Base de Datos Microbiológica
+      </h1>
+
+      <p class="text-slate-400 max-w-2xl mx-auto">
+        Explora las características, hábitats, mecánicas de transmisión
+        y estadísticas base de todos los especímenes.
+      </p>
+
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- GALERÍA -->
+    <!-- ========================================================= -->
+
+    <section id="galeria" class="my-6">
+
+      <div class="flex flex-col md:flex-row gap-4 justify-between items-center mb-8 bg-cardBg p-4 rounded-xl border border-slate-700">
+
+        <!-- BUSCADOR -->
+
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Buscar por nombre, categoría o hábitat..."
+          class="w-full md:w-1/2 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500 text-sm"
+        />
+
+        <!-- FILTROS -->
+
+        <div class="flex gap-2 w-full md:w-auto justify-center">
+
+          <button
+            class="filter-btn active-filter px-4 py-2 rounded-lg text-sm font-semibold transition-all bg-purple-600 text-white"
+            data-filter="all"
+          >
+            Todos (20)
+          </button>
+
+          <button
+            class="filter-btn px-4 py-2 rounded-lg text-sm font-semibold transition-all bg-slate-800 text-slate-300 hover:bg-slate-700"
+            data-filter="Gram +"
+          >
+            Gram +
+          </button>
+
+          <button
+            class="filter-btn px-4 py-2 rounded-lg text-sm font-semibold transition-all bg-slate-800 text-slate-300 hover:bg-slate-700"
+            data-filter="Gram -"
+          >
+            Gram -
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- GRID -->
+
+      <div
+        id="gallery-grid"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+      >
+      </div>
+
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- FORMULARIO -->
+    <!-- ========================================================= -->
+
+    <section
+      id="contacto"
+      class="my-16 max-w-2xl mx-auto bg-cardBg p-8 rounded-2xl border border-slate-700 shadow-2xl"
+    >
+
+      <h2 class="text-2xl font-bold text-center mb-2">
+        Reportar Nuevo Espécimen
+      </h2>
+
+      <p class="text-slate-400 text-center text-sm mb-6">
+        Ingresa los datos para registrar un hallazgo en la Bacteriodex.
+      </p>
+
+      <form id="bacterio-form" novalidate class="space-y-4">
+
+        <!-- NOMBRE -->
+
+        <div>
+
+          <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">
+            Nombre del Espécimen
+          </label>
+
+          <input
+            type="text"
+            id="nombre"
+            class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm focus:outline-none"
+            placeholder="Ej. Bacillus anthracis"
+          />
+
+          <span
+            id="err-nombre"
+            class="text-xs text-red-400 hidden"
+          >
+            El nombre debe tener al menos 3 caracteres.
+          </span>
+
+        </div>
+
+        <!-- EMAIL -->
+
+        <div>
+
+          <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">
+            Correo del Investigador
+          </label>
+
+          <input
+            type="email"
+            id="email"
+            class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm focus:outline-none"
+            placeholder="investigador@lab.com"
+          />
+
+          <span
+            id="err-email"
+            class="text-xs text-red-400 hidden"
+          >
+            Ingresa un correo electrónico válido.
+          </span>
+
+        </div>
+
+        <!-- OBSERVACIONES -->
+
+        <div>
+
+          <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">
+            Observaciones
+          </label>
+
+          <textarea
+            id="observaciones"
+            rows="3"
+            class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm focus:outline-none"
+            placeholder="Describe la tinción Gram, forma y hábitat..."
+          ></textarea>
+
+          <span
+            id="err-observaciones"
+            class="text-xs text-red-400 hidden"
+          >
+            Escribe al menos 10 caracteres.
+          </span>
+
+        </div>
+
+        <button
+          type="submit"
+          class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 font-bold py-3 rounded-lg transition-all shadow-lg"
+        >
+          Registrar Espécimen
+        </button>
+
+      </form>
+
+      <div
+        id="form-success"
+        class="hidden mt-4 p-4 bg-emerald-500/20 border border-emerald-500 text-emerald-300 rounded-lg text-center text-sm font-semibold"
+      >
+        ¡Espécimen enviado con éxito para revisión epidemiológica!
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ========================================================= -->
+  <!-- MODAL -->
+  <!-- ========================================================= -->
+
+  <div
+    id="modal-backdrop"
+    class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4"
+  >
+
+    <div
+      id="modal-content"
+      class="bg-cardBg border border-slate-700 max-w-lg w-full rounded-2xl p-6 relative shadow-2xl max-h-[90vh] overflow-y-auto"
+    >
+
+      <button
+        id="modal-close"
+        class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl font-bold z-10"
+        aria-label="Cerrar"
+      >
+        ✕
+      </button>
+
+      <div id="modal-body">
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- FOOTER -->
+  <!-- ========================================================= -->
+
+  <footer class="bg-slate-900 border-t border-slate-800 text-center py-4 text-xs text-slate-500">
+    Bacteriodex &copy; 2026 — Catálogo Bacteriológico Interactivo
+  </footer>
+
+  <!-- ========================================================= -->
+  <!-- JAVASCRIPT -->
+  <!-- ========================================================= -->
+
+  <script>
+
+    /*
+    ==============================================================
+    CATÁLOGO
+    ==============================================================
+
+    IMPORTANTE:
+
+    Las imágenes NO necesitan estar escritas aquí.
+
+    JavaScript genera automáticamente:
+
+    imagenes/01_staphylococcus_aureus.jpg
+
+    imagenes/02_staphylococcus_epidermidis.jpg
+
+    etc.
+
+    siempre que el nombre de archivo siga el formato:
+
+    ID_nombre_de_la_bacteria.jpg
+    */
+
+    const especimenes = [
+
+      {
+        id: "01",
+        nombre: "Staphylococcus aureus",
+        tipo: "Gram +",
+        desc: "Se agrupa en racimos como uvas y coloniza la piel y las fosas nasales. Cuanto más débil está el sistema inmune del huésped, más fácil le resulta invadir tejidos y causar infección.",
+        cat: "Coco gram positivo",
+        tam: "0,5-1,5 µm",
+        hab: "Piel y mucosa nasal",
+        trans: "Contacto directo, fómites",
+        stats: { ps: 70, ata: 65, def: 75, vel: 60 },
+        deb: "Penicilinas antiestafilocócicas, Vancomicina (SARM), Higiene y desinfección"
+      },
+
+      {
+        id: "02",
+        nombre: "Staphylococcus epidermidis",
+        tipo: "Gram +",
+        desc: "Vive de forma inofensiva sobre la piel sana, pero se adhiere a catéteres y prótesis formando una biopelícula que lo protege de los antibióticos y del sistema inmune.",
+        cat: "Coco gram positivo",
+        tam: "0,5-1,5 µm",
+        hab: "Piel sana",
+        trans: "Dispositivos médicos",
+        stats: { ps: 60, ata: 30, def: 70, vel: 40 },
+        deb: "Vancomicina, Retiro del dispositivo"
+      },
+
+      {
+        id: "03",
+        nombre: "Streptococcus pyogenes",
+        tipo: "Gram +",
+        desc: "Se dispone en largas cadenas y libera toxinas y enzimas que le permiten propagarse rápido por el tejido, desde la garganta hasta la piel.",
+        cat: "Coco gram positivo",
+        tam: "0,6-1,0 µm",
+        hab: "Garganta y piel",
+        trans: "Gotitas, contacto directo",
+        stats: { ps: 40, ata: 70, def: 30, vel: 75 },
+        deb: "Penicilina, Amoxicilina, Macrólidos (alergia)"
+      },
+
+      {
+        id: "04",
+        nombre: "Streptococcus viridans",
+        tipo: "Gram +",
+        desc: "Habita tranquilamente en la boca, pero un simple procedimiento dental puede liberarlo al torrente sanguíneo, donde se instala en válvulas cardíacas dañadas.",
+        cat: "Coco gram positivo",
+        tam: "0,5-1,0 µm",
+        hab: "Boca y orofaringe",
+        trans: "Bacteriemia dental",
+        stats: { ps: 35, ata: 45, def: 35, vel: 25 },
+        deb: "Penicilina, Gentamicina, Profilaxis dental"
+      },
+
+      {
+        id: "05",
+        nombre: "Streptococcus pneumoniae",
+        tipo: "Gram +",
+        desc: "Protegido por una cápsula de polisacárido, aprovecha infecciones virales previas para invadir pulmones, oídos y meninges.",
+        cat: "Diplococo gram positivo",
+        tam: "0,5-1,25 µm",
+        hab: "Nasofaringe",
+        trans: "Gotitas respiratorias",
+        stats: { ps: 55, ata: 75, def: 50, vel: 70 },
+        deb: "Amoxicilina, Ceftriaxona, Vacuna conjugada"
+      },
+
+      {
+        id: "06",
+        nombre: "Moraxella catarrhalis",
+        tipo: "Gram -",
+        desc: "Coloniza la vía respiratoria superior con forma de grano de café, y suele aprovecharse de defensas ya debilitadas por infecciones virales.",
+        cat: "Diplococo gram negativo",
+        tam: "0,6-1,0 µm",
+        hab: "Vía respiratoria alta",
+        trans: "Gotitas respiratorias",
+        stats: { ps: 40, ata: 35, def: 55, vel: 55 },
+        deb: "Amoxicilina-clavulánico"
+      },
+
+      {
+        id: "07",
+        nombre: "Corynebacterium diphtheriae",
+        tipo: "Gram +",
+        desc: "Sus extremos ensanchados le dan forma de maza; libera una potente toxina que forma una membrana grisácea en la garganta y daña el corazón y los nervios.",
+        cat: "Bacilo gram positivo",
+        tam: "2-6 µm",
+        hab: "Garganta y piel",
+        trans: "Gotitas respiratorias",
+        stats: { ps: 45, ata: 85, def: 30, vel: 60 },
+        deb: "Antitoxina diftérica, Penicilina, Eritromicina, Vacuna DPT"
+      },
+
+      {
+        id: "08",
+        nombre: "Bordetella pertussis",
+        tipo: "Gram -",
+        desc: "Se adhiere a los cilios del epitelio respiratorio y provoca accesos de tos violentos que le dan su nombre popular: tos ferina.",
+        cat: "Cocobacilo gram negativo",
+        tam: "0,2-0,5 µm",
+        hab: "Vía respiratoria",
+        trans: "Gotitas respiratorias",
+        stats: { ps: 35, ata: 55, def: 25, vel: 90 },
+        deb: "Azitromicina, Vacuna DPT"
+      },
+
+      {
+        id: "09",
+        nombre: "Clostridium tetani",
+        tipo: "Gram +",
+        desc: "Sus esporas duermen en la tierra durante años, esperando entrar por una herida para liberar una toxina que provoca espasmos musculares incontrolables.",
+        cat: "Bacilo gram positivo",
+        tam: "2-5 µm",
+        hab: "Suelo y polvo",
+        trans: "Heridas con tierra",
+        stats: { ps: 80, ata: 90, def: 40, vel: 20 },
+        deb: "Inmunoglobulina antitetánica, Metronidazol, Vacuna toxoide"
+      },
+
+      {
+        id: "10",
+        nombre: "Clostridium botulinum",
+        tipo: "Gram +",
+        desc: "Prospera sin oxígeno dentro de conservas mal esterilizadas, liberando una de las toxinas más potentes conocidas, capaz de paralizar los músculos.",
+        cat: "Bacilo gram positivo",
+        tam: "3-7 µm",
+        hab: "Suelo, conservas",
+        trans: "Alimentos mal conservados",
+        stats: { ps: 75, ata: 95, def: 35, vel: 15 },
+        deb: "Antitoxina botulínica, Soporte respiratorio"
+      },
+
+      {
+        id: "11",
+        nombre: "Clostridium perfringens",
+        tipo: "Gram +",
+        desc: "Se multiplica a gran velocidad en tejido con poco oxígeno, liberando gas y toxinas que destruyen el músculo en cuestión de horas.",
+        cat: "Bacilo gram positivo",
+        tam: "4-8 µm",
+        hab: "Suelo, intestino",
+        trans: "Heridas, alimentos",
+        stats: { ps: 65, ata: 80, def: 40, vel: 35 },
+        deb: "Desbridamiento quirúrgico, Penicilina"
+      },
+
+      {
+        id: "12",
+        nombre: "Clostridium difficile",
+        tipo: "Gram +",
+        desc: "Aprovecha el vacío que dejan los antibióticos en la flora intestinal para multiplicarse y liberar toxinas que inflaman el colon.",
+        cat: "Bacilo gram positivo",
+        tam: "3-6,5 µm",
+        hab: "Colon, hospitales",
+        trans: "Fecal-oral, esporas",
+        stats: { ps: 85, ata: 60, def: 70, vel: 65 },
+        deb: "Vancomicina oral, Fidaxomicina"
+      },
+
+      {
+        id: "13",
+        nombre: "Escherichia coli",
+        tipo: "Gram -",
+        desc: "Convive sin problemas en el intestino, pero ciertas cepas producen toxinas capaces de dañar los riñones o provocar infecciones urinarias.",
+        cat: "Bacilo gram negativo",
+        tam: "1-2 µm",
+        hab: "Intestino",
+        trans: "Fecal-oral",
+        stats: { ps: 55, ata: 40, def: 55, vel: 60 },
+        deb: "Hidratación, Fluoroquinolonas (ITU)"
+      },
+
+      {
+        id: "14",
+        nombre: "Salmonella enterica",
+        tipo: "Gram -",
+        desc: "Viaja escondida en huevos y aves de corral, e invade la mucosa intestinal provocando fiebre y diarrea, o cuadros más graves como la fiebre tifoidea.",
+        cat: "Bacilo gram negativo",
+        tam: "2-5 µm",
+        hab: "Intestino de aves",
+        trans: "Alimentos, agua",
+        stats: { ps: 50, ata: 55, def: 45, vel: 55 },
+        deb: "Hidratación, Ciprofloxacino, Ceftriaxona"
+      },
+
+      {
+        id: "15",
+        nombre: "Shigella dysenteriae",
+        tipo: "Gram -",
+        desc: "Basta con muy pocas células para enfermar; invade la mucosa del colon y causa disentería con sangre y moco en la materia fecal.",
+        cat: "Bacilo gram negativo",
+        tam: "1-3 µm",
+        hab: "Colon humano",
+        trans: "Fecal-oral",
+        stats: { ps: 45, ata: 65, def: 45, vel: 80 },
+        deb: "Ciprofloxacino, Azitromicina"
+      },
+
+      {
+        id: "16",
+        nombre: "Haemophilus influenzae",
+        tipo: "Gram -",
+        desc: "Su cápsula, en el serotipo b, lo hace especialmente peligroso: capaz de atravesar las defensas de niños pequeños y llegar hasta las meninges.",
+        cat: "Cocobacilo gram negativo",
+        tam: "0,3-1 µm",
+        hab: "Vía respiratoria alta",
+        trans: "Gotitas respiratorias",
+        stats: { ps: 40, ata: 60, def: 40, vel: 65 },
+        deb: "Ceftriaxona, Vacuna Hib"
+      },
+
+      {
+        id: "17",
+        nombre: "Klebsiella pneumoniae",
+        tipo: "Gram -",
+        desc: "Envuelto en una gruesa cápsula mucosa, resiste el ataque del sistema inmune y prospera en hospitales, donde acumula resistencia a los antibióticos.",
+        cat: "Bacilo gram negativo",
+        tam: "1-2 µm",
+        hab: "Intestino, hospitales",
+        trans: "Ambiente hospitalario",
+        stats: { ps: 60, ata: 65, def: 80, vel: 45 },
+        deb: "Carbapenémicos, Cefalosporinas (antibiograma)"
+      },
+
+      {
+        id: "18",
+        nombre: "Pseudomonas aeruginosa",
+        tipo: "Gram -",
+        desc: "Sobrevive incluso en ambientes húmedos con pocos nutrientes, como grifos y equipo hospitalario, y ataca sobre todo a quemados y pacientes con fibrosis quística.",
+        cat: "Bacilo gram negativo",
+        tam: "1-5 µm",
+        hab: "Agua, suelo, hospitales",
+        trans: "Agua, equipo hospitalario",
+        stats: { ps: 70, ata: 65, def: 85, vel: 40 },
+        deb: "Piperacilina-tazobactam, Ceftazidima, Ciprofloxacino"
+      },
+
+      {
+        id: "19",
+        nombre: "Vibrio cholerae",
+        tipo: "Gram -",
+        desc: "Con forma de coma y muy móvil, libera una toxina que provoca una diarrea acuosa masiva capaz de deshidratar a una persona en cuestión de horas.",
+        cat: "Bacilo gram negativo curvo",
+        tam: "1,5-3 µm",
+        hab: "Agua dulce y salobre",
+        trans: "Agua, alimentos",
+        stats: { ps: 40, ata: 70, def: 25, vel: 85 },
+        deb: "Rehidratación urgente, Doxiciclina/azitromicina"
+      },
+
+      {
+        id: "20",
+        nombre: "Helicobacter pylori",
+        tipo: "Gram -",
+        desc: "Su forma helicoidal y sus flagelos le permiten perforar la capa de moco gástrico y sobrevivir en un ambiente tan ácido como el estómago.",
+        cat: "Bacilo gram negativo helicoidal",
+        tam: "2,5-5 µm",
+        hab: "Mucosa gástrica",
+        trans: "Oral-oral, fecal-oral",
+        stats: { ps: 75, ata: 35, def: 55, vel: 30 },
+        deb: "IBP + Amoxicilina + Claritromicina"
+      }
+
+    ];
+
+    /* ============================================================
+       GENERADOR AUTOMÁTICO DE RUTAS DE IMAGEN
+       ============================================================ */
+
+    function getImagePath(item) {
+
+      const nombreArchivo = item.nombre
+        .toLowerCase()
+        .replace(/\s+/g, "_")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+
+      return `imagenes/${item.id}_${nombreArchivo}.jpg`;
+    }
+
+    /* ============================================================
+       INICIO
+       ============================================================ */
+
+    document.addEventListener("DOMContentLoaded", () => {
+
+      /* ==========================================================
+         MENÚ MÓVIL
+         ========================================================== */
+
+      const btnMenu = document.getElementById("btn-menu");
+      const mobileMenu = document.getElementById("mobile-menu");
+
+      btnMenu.addEventListener("click", () => {
+        mobileMenu.classList.toggle("hidden");
+      });
+
+      document.querySelectorAll(".mobile-link").forEach(link => {
+
+        link.addEventListener("click", () => {
+          mobileMenu.classList.add("hidden");
+        });
+
+      });
+
+      /* ==========================================================
+         GALERÍA
+         ========================================================== */
+
+      const grid = document.getElementById("gallery-grid");
+      const searchInput = document.getElementById("search-input");
+      const filterBtns = document.querySelectorAll(".filter-btn");
+
+      let currentFilter = "all";
+      let searchQuery = "";
+
+      function renderCards() {
+
+        grid.innerHTML = "";
+
+        const filtrados = especimenes.filter(item => {
+
+          const matchFilter =
+            currentFilter === "all" ||
+            item.tipo === currentFilter;
+
+          const matchSearch =
+            item.nombre.toLowerCase().includes(searchQuery) ||
+            item.hab.toLowerCase().includes(searchQuery) ||
+            item.cat.toLowerCase().includes(searchQuery);
+
+          return matchFilter && matchSearch;
+
+        });
+
+        if (filtrados.length === 0) {
+
+          grid.innerHTML = `
+            <p class="col-span-full text-center text-slate-500 py-8">
+              No se encontraron especímenes registrados que coincidan con los criterios.
+            </p>
+          `;
+
+          return;
+        }
+
+        filtrados.forEach(item => {
+
+          const isGramPos = item.tipo === "Gram +";
+
+          const card = document.createElement("div");
+
+          card.className =
+            "bg-cardBg rounded-xl overflow-hidden border border-slate-700/80 hover:border-purple-500/50 transition-all duration-300 hover:-translate-y-1 cursor-pointer shadow-lg flex flex-col justify-between";
+
+          card.onclick = () => openModal(item);
+
+          card.innerHTML = `
+
+            <!-- IMAGEN -->
+
+            <div class="relative overflow-hidden bg-slate-900">
+
+              <img
+                src="${getImagePath(item)}"
+                alt="${item.nombre}"
+                class="w-full h-48 object-cover transition-transform duration-500 hover:scale-105"
+                loading="lazy"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+              >
+
+              <!-- FALLBACK SI NO SE ENCUENTRA LA IMAGEN -->
+
+              <div
+                style="display:none"
+                class="w-full h-48 items-center justify-center text-slate-500 text-sm"
+              >
+                🦠 Imagen no encontrada
+              </div>
+
+            </div>
+
+            <!-- INFORMACIÓN -->
+
+            <div class="p-5">
+
+              <div class="flex justify-between items-start mb-2">
+
+                <span class="text-xs font-mono font-bold text-slate-400">
+                  Nº ${item.id}
+                </span>
+
+                <span
+                  class="text-xs font-bold px-2 py-0.5 rounded
+                  ${isGramPos
+                    ? 'bg-purple-900/60 text-purple-300 border border-purple-500/30'
+                    : 'bg-red-900/60 text-red-300 border border-red-500/30'}"
+                >
+                  ${item.tipo}
+                </span>
+
+              </div>
+
+              <h3 class="font-bold text-lg text-slate-100 italic mb-1">
+                ${item.nombre}
+              </h3>
+
+              <p class="text-xs text-slate-400 line-clamp-2 mb-4">
+                ${item.desc}
+              </p>
+
+              <div class="border-t border-slate-800 pt-3 flex justify-between text-[11px] text-slate-400">
+
+                <span>
+                  <strong>PS:</strong> ${item.stats.ps}
+                </span>
+
+                <span>
+                  <strong>ATA:</strong> ${item.stats.ata}
+                </span>
+
+                <span>
+                  <strong>DEF:</strong> ${item.stats.def}
+                </span>
+
+                <span>
+                  <strong>VEL:</strong> ${item.stats.vel}
+                </span>
+
+              </div>
+
+            </div>
+          `;
+
+          grid.appendChild(card);
+
+        });
+
+      }
+
+      /* ==========================================================
+         FILTROS
+         ========================================================== */
+
+      filterBtns.forEach(btn => {
+
+        btn.addEventListener("click", () => {
+
+          filterBtns.forEach(b => {
+
+            b.classList.remove(
+              "bg-purple-600",
+              "text-white"
+            );
+
+            b.classList.add(
+              "bg-slate-800",
+              "text-slate-300"
+            );
+
+          });
+
+          btn.classList.remove(
+            "bg-slate-800",
+            "text-slate-300"
+          );
+
+          btn.classList.add(
+            "bg-purple-600",
+            "text-white"
+          );
+
+          currentFilter = btn.dataset.filter;
+
+          renderCards();
+
+        });
+
+      });
+
+      /* ==========================================================
+         BUSCADOR
+         ========================================================== */
+
+      searchInput.addEventListener("input", e => {
+
+        searchQuery = e.target.value.toLowerCase().trim();
+
+        renderCards();
+
+      });
+
+      /* ==========================================================
+         MODAL
+         ========================================================== */
+
+      const modalBackdrop =
+        document.getElementById("modal-backdrop");
+
+      const modalBody =
+        document.getElementById("modal-body");
+
+      const modalClose =
+        document.getElementById("modal-close");
+
+      window.openModal = (item) => {
+
+        const isGramPos = item.tipo === "Gram +";
+
+        modalBody.innerHTML = `
+
+          <!-- IMAGEN GRANDE -->
+
+          <div class="mb-5 overflow-hidden rounded-xl bg-slate-900">
+
+            <img
+              src="${getImagePath(item)}"
+              alt="${item.nombre}"
+              class="w-full h-64 object-cover"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+            >
+
+            <div
+              style="display:none"
+              class="w-full h-64 items-center justify-center text-slate-500"
+            >
+              🦠 Imagen no encontrada
+            </div>
+
+          </div>
+
+          <!-- IDENTIFICACIÓN -->
+
+          <div class="flex items-center gap-2 mb-1">
+
+            <span class="text-xs font-mono font-bold text-slate-400">
+              Espécimen Nº ${item.id}
+            </span>
+
+            <span
+              class="text-xs font-bold px-2 py-0.5 rounded
+              ${isGramPos
+                ? 'bg-purple-900/60 text-purple-300'
+                : 'bg-red-900/60 text-red-300'}"
+            >
+              ${item.tipo}
+            </span>
+
+          </div>
+
+          <h2 class="text-2xl font-bold italic text-purple-300 mb-2">
+            ${item.nombre}
+          </h2>
+
+          <p class="text-sm text-slate-300 mb-4">
+            ${item.desc}
+          </p>
+
+          <!-- INFORMACIÓN -->
+
+          <div
+            class="space-y-2 text-xs text-slate-300 bg-slate-900/50 p-3 rounded-lg border border-slate-800 mb-4"
+          >
+
+            <div>
+              <strong>Categoría:</strong>
+              ${item.cat}
+            </div>
+
+            <div>
+              <strong>Tamaño:</strong>
+              ${item.tam}
+            </div>
+
+            <div>
+              <strong>Hábitat:</strong>
+              ${item.hab}
+            </div>
+
+            <div>
+              <strong>Transmisión:</strong>
+              ${item.trans}
+            </div>
+
+            <div>
+              <strong>Tratamiento / Debilidad:</strong>
+
+              <span class="text-emerald-400">
+                ${item.deb}
+              </span>
+
+            </div>
+
+          </div>
+
+          <!-- ESTADÍSTICAS -->
+
+          <h4 class="text-xs font-bold uppercase text-slate-400 mb-2">
+            Estadísticas Base
+          </h4>
+
+          <div class="space-y-2 text-xs">
+
+            ${renderStatBar("PS", item.stats.ps)}
+
+            ${renderStatBar("Ataque", item.stats.ata)}
+
+            ${renderStatBar("Defensa", item.stats.def)}
+
+            ${renderStatBar("Velocidad", item.stats.vel)}
+
+          </div>
+
+        `;
+
+        modalBackdrop.classList.remove("hidden");
+
+        modalBackdrop.classList.add("flex");
+
+        document.body.classList.add("overflow-hidden");
+
+      };
+
+      /* ==========================================================
+         BARRAS DE ESTADÍSTICAS
+         ========================================================== */
+
+      function renderStatBar(label, val) {
+
+        return `
+
+          <div>
+
+            <div class="flex justify-between mb-0.5">
+
+              <span>
+                ${label}
+              </span>
+
+              <span class="font-mono font-bold">
+                ${val}
+              </span>
+
+            </div>
+
+            <div class="w-full bg-slate-800 rounded-full h-2">
+
+              <div
+                class="bg-purple-500 h-2 rounded-full transition-all duration-700"
+                style="width: ${Math.min(val, 100)}%"
+              ></div>
+
+            </div>
+
+          </div>
+
+        `;
+
+      }
+
+      /* ==========================================================
+         CERRAR MODAL
+         ========================================================== */
+
+      function closeModal() {
+
+        modalBackdrop.classList.add("hidden");
+
+        modalBackdrop.classList.remove("flex");
+
+        document.body.classList.remove("overflow-hidden");
+
+      }
+
+      modalClose.addEventListener("click", closeModal);
+
+      modalBackdrop.addEventListener("click", e => {
+
+        if (e.target === modalBackdrop) {
+          closeModal();
+        }
+
+      });
+
+      /* ESC PARA CERRAR */
+
+      document.addEventListener("keydown", e => {
+
+        if (e.key === "Escape") {
+          closeModal();
+        }
+
+      });
+
+      /* ==========================================================
+         FORMULARIO
+         ========================================================== */
+
+      const form =
+        document.getElementById("bacterio-form");
+
+      const fields = {
+
+        nombre: {
+          el: document.getElementById("nombre"),
+          err: document.getElementById("err-nombre"),
+          validate: v => v.trim().length >= 3
+        },
+
+        email: {
+          el: document.getElementById("email"),
+          err: document.getElementById("err-email"),
+          validate: v =>
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)
+        },
+
+        observaciones: {
+          el: document.getElementById("observaciones"),
+          err: document.getElementById("err-observaciones"),
+          validate: v => v.trim().length >= 10
+        }
+
+      };
+
+      Object.keys(fields).forEach(key => {
+
+        const field = fields[key];
+
+        field.el.addEventListener("input", () => {
+
+          if (field.validate(field.el.value)) {
+
+            field.el.classList.remove("border-red-500");
+
+            field.el.classList.add("border-emerald-500");
+
+            field.err.classList.add("hidden");
+
+          } else {
+
+            field.el.classList.remove("border-emerald-500");
+
+            field.el.classList.add("border-red-500");
+
+            field.err.classList.remove("hidden");
+
+          }
+
+        });
+
+      });
+
+      form.addEventListener("submit", e => {
+
+        e.preventDefault();
+
+        let isValid = true;
+
+        Object.keys(fields).forEach(key => {
+
+          const field = fields[key];
+
+          if (!field.validate(field.el.value)) {
+
+            field.el.classList.add("border-red-500");
+
+            field.err.classList.remove("hidden");
+
+            isValid = false;
+
+          }
+
+        });
+
+        if (isValid) {
+
+          document
+            .getElementById("form-success")
+            .classList.remove("hidden");
+
+          form.reset();
+
+          Object.keys(fields).forEach(key => {
+
+            fields[key]
+              .el
+              .classList.remove("border-emerald-500");
+
+          });
+
+          setTimeout(() => {
+
+            document
+              .getElementById("form-success")
+              .classList.add("hidden");
+
+          }, 4000);
+
+        }
+
+      });
+
+      /* ==========================================================
+         INICIALIZAR
+         ========================================================== */
+
+      renderCards();
+
+    });
+
+  </script>
+
+</body>
+</html>
